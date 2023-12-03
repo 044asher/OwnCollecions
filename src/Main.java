@@ -1,17 +1,20 @@
 import Interfaces.MyList;
 import Realisations.MyArrayList;
+import Realisations.MyLinkedList;
 
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("My List:");
         MyList myList = new MyArrayList();
-        System.out.println(myList.isEmpty());
+        System.out.println("is empty: " + myList.isEmpty());
         myList.add(42);
-        System.out.println(myList.isEmpty());
+        System.out.println("is empty: " + myList.isEmpty());
         myList.add(25);
         myList.add(14);
         myList.add(125);
         myList.printArray();
+        System.out.println("size: " + myList.size());
 
         System.out.println("\nДобавляем теперь по индексу, проверяя смещение элементов");
         myList.add(1, 1);
@@ -37,5 +40,41 @@ public class Main {
 
 
 
+
+        System.out.println("My LinkedList: ");
+        MyLinkedList myLinkedList = new MyLinkedList();
+        myLinkedList.add(1);
+        myLinkedList.add(2);
+        myLinkedList.add(15);
+        myLinkedList.add(3);
+        myLinkedList.add(542);
+        System.out.println("is empty: " + myLinkedList.isEmpty());
+        myLinkedList.printArray();
+
+
+        System.out.println("\nДобавляем теперь по индексу, проверяя смещение элементов");
+        myLinkedList.add(0, 8);
+        myLinkedList.printArray();
+
+        System.out.println("\nПроверяем удаление элемента");
+        myLinkedList.remove(2);
+        myLinkedList.printArray();
+
+        System.out.println("\nПроверяем получение элементов");
+        System.out.println(myLinkedList.contains(15));
+        System.out.println(myLinkedList.indexOf(3));
+        System.out.println(myLinkedList.lastIndexOf(2));
+        System.out.println(myLinkedList.get(3));
+
+        System.out.println("\nМетоды интерфейса MyQueue");
+        myLinkedList.printArray();
+
+        myLinkedList.offer(5);
+        myLinkedList.printArray();
+
+        System.out.println(myLinkedList.poll());
+        myLinkedList.printArray();
+
+        System.out.println(myLinkedList.peek());
     }
 }

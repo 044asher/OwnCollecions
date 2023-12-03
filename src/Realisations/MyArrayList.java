@@ -58,8 +58,8 @@ public class MyArrayList implements MyList {
             return false;
         }
         System.arraycopy(array, i + 1, array, i, size - i - 1); //i+1 т.к копируемая часть начинается с элемента, следующего за тем, который нужно удалить. size - index - 1: количество элементов, которые нужно скопировать.
-        array[size - 1] = null;
-        size--;
+        array[--size] = null;
+        //size--;
         return true;
 
     }
