@@ -1,17 +1,19 @@
-package Realisations;
+package GenericsRealisations;
 
-import Interfaces.MyList;
+import GenericsInterfaces.GenMyList;
 
 import java.util.Arrays;
 
-public class MyArrayList implements MyList {
+public class GenMyArrayList<T> implements GenMyList<T> {
     private static final int START_CAPACITY = 10;
-    private Integer[] array;
+    private Object[] array;
     private int size;
-    public MyArrayList(){
-        this.array = new Integer[START_CAPACITY];
+
+    public GenMyArrayList() {
+        this.array = new Object[START_CAPACITY];
         this.size = 0;
     }
+
     @Override
     public int size() {
         return size;
@@ -23,27 +25,25 @@ public class MyArrayList implements MyList {
     }
 
     @Override
-    public boolean contains(Integer object) {
+    public boolean contains(T object) {
         return indexOf(object) >= 0;
     }
 
     @Override
-    public void add(Integer object) {
-        if(size == array.length) {
+    public void add(T object) {
+        if (size == array.length) {
             resize();
         }
         array[size++] = object;
     }
 
     @Override
-    public void add(int index, Integer object) {
-        if (index < 0){
+    public void add(int index, T object) {
+        if (index < 0) {
             throw new IndexOutOfBoundsException("Index cannot be less than zero!");
-        }
-        else if (index > size){
+        } else if (index > size) {
             index = size;
-        }
-        else if(size == array.length){
+        } else if (size == array.length) {
             resize();
         }
         System.arraycopy(array, index, array, index + 1, size - index);
@@ -52,15 +52,14 @@ public class MyArrayList implements MyList {
     }
 
     @Override
-    public boolean remove(Integer object) {
+    public boolean remove(T object) {
         int i = indexOf(object);
-        if(i == -1){
+        if (i == -1) {
             return false;
         }
         System.arraycopy(array, i + 1, array, i, size - i - 1);
         array[--size] = null;
         return true;
-
     }
 
     @Override
@@ -72,17 +71,17 @@ public class MyArrayList implements MyList {
     }
 
     @Override
-    public Integer get(int index) {
-        if (index < 0 || index > size){
+    public T get(int index) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        return array[index];
+        return (T) array[index];
     }
 
     @Override
-    public int indexOf(Integer object) {
+    public int indexOf(T object) {
         for (int i = 0; i < size; i++) {
-            if(object.equals(array[i])){
+            if (object.equals(array[i])) {
                 return i;
             }
         }
@@ -90,23 +89,25 @@ public class MyArrayList implements MyList {
     }
 
     @Override
-    public int lastIndexOf(Integer object) {
+    public int lastIndexOf(T object) {
         for (int i = size - 1; i >= 0; i--) {
-            if(object.equals(array[i])){
+            if (object.equals(array[i])) {
                 return i;
             }
         }
         return -1;
     }
-    private void resize(){
+
+    private void resize() {
         array = Arrays.copyOf(array, array.length * 2);
     }
+
     @Override
-    public void printArray(){
+    public void printArray() {
         for (int i = 0; i < size; i++) {
             System.out.print(array[i] + " ");
         }
         System.out.println();
     }
-    
 }
+

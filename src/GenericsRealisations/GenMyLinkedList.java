@@ -1,20 +1,23 @@
-package Realisations;
+package GenericsRealisations;
 
-import Interfaces.MyList;
-import Interfaces.MyQueue;
+import GenericsInterfaces.GenMyList;
+import GenericsInterfaces.GenMyQueue;
 
-public class MyLinkedList implements MyList, MyQueue {
-    private static class Node{
-        Integer data;
-        Node prev;
-        Node next;
-        public Node(Integer data){
+public class GenMyLinkedList<T> implements GenMyList<T>, GenMyQueue<T> {
+    private static class Node<T> {
+        T data;
+        Node<T> prev;
+        Node<T> next;
+
+        public Node(T data) {
             this.data = data;
         }
     }
-    private Node head;
-    private Node tail;
+
+    private Node<T> head;
+    private Node<T> tail;
     private int size;
+
     @Override
     public int size() {
         return size;
@@ -26,10 +29,10 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public boolean contains(Integer object) {
-        Node obj = head;
-        while (obj != null){
-            if(obj.data.equals(object)){
+    public boolean contains(T object) {
+        Node<T> obj = head;
+        while (obj != null) {
+            if (obj.data.equals(object)) {
                 return true;
             }
             obj = obj.next;
@@ -38,12 +41,11 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public void add(Integer object) {
-        Node newNode = new Node(object);
-        if(head == null) {
+    public void add(T object) {
+        Node<T> newNode = new Node<>(object);
+        if (head == null) {
             head = tail = newNode;
-        }
-        else {
+        } else {
             tail.next = newNode;
             newNode.prev = tail;
             tail = newNode;
@@ -52,25 +54,23 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public void add(int index, Integer object) {
-        if (index < 0 || index > size){
+    public void add(int index, T object) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index out of Bounds.");
         }
-        Node newNode = new Node(object);
-        if(index == 0){
+        Node<T> newNode = new Node<>(object);
+        if (index == 0) {
             newNode.next = head;
-            if(head != null){
+            if (head != null) {
                 head.prev = newNode;
             }
             head = newNode;
-        }
-        else if(index == size){
+        } else if (index == size) {
             tail.next = newNode;
             newNode.prev = tail;
             tail = newNode;
-        }
-        else {
-            Node obj = getNode(index);
+        } else {
+            Node<T> obj = getNode(index);
             newNode.prev = obj.prev;
             newNode.next = obj;
             obj.prev.next = newNode;
@@ -80,21 +80,19 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public boolean remove(Integer object) {
-        Node current = head;
-        while(current != null) {
-            if(current.data.equals(object)){
-                if(current.prev != null){
+    public boolean remove(T object) {
+        Node<T> current = head;
+        while (current != null) {
+            if (current.data.equals(object)) {
+                if (current.prev != null) {
                     current.prev.next = current.next;
-                }
-                else {
+                } else {
                     head = current.next;
                 }
 
-                if(current.next != null){
+                if (current.next != null) {
                     current.next.prev = current.prev;
-                }
-                else {
+                } else {
                     tail = current.prev;
                 }
 
@@ -113,16 +111,16 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public Integer get(int index) {
+    public T get(int index) {
         return getNode(index).data;
     }
 
     @Override
-    public int indexOf(Integer object) {
-        Node current = head;
+    public int indexOf(T object) {
+        Node<T> current = head;
         int index = 0;
-        while (current != null){
-            if(current.data.equals(object)){
+        while (current != null) {
+            if (current.data.equals(object)) {
                 return index;
             }
             current = current.next;
@@ -132,11 +130,11 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public int lastIndexOf(Integer object) {
-        Node current = tail;
+    public int lastIndexOf(T object) {
+        Node<T> current = tail;
         int index = size - 1;
-        while (current != null){
-            if(current.data.equals(object)){
+        while (current != null) {
+            if (current.data.equals(object)) {
                 return index;
             }
             current = current.prev;
@@ -147,8 +145,8 @@ public class MyLinkedList implements MyList, MyQueue {
 
     @Override
     public void printArray() {
-        Node current = head;
-        while(current != null){
+        Node<T> current = head;
+        while (current != null) {
             System.out.print(current.data + " ");
             current = current.next;
         }
@@ -156,22 +154,21 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public boolean offer(Integer object) { //!Modified
+    public boolean offer(T object) {
         add(object);
         return true;
     }
 
     @Override
-    public Integer poll() {
-        if(isEmpty()){
+    public T poll() {
+        if (isEmpty()) {
             return null;
         }
-        Integer data = head.data;
+        T data = head.data;
         head = head.next;
-        if(head != null) {
+        if (head != null) {
             head.prev = null;
-        }
-        else {
+        } else {
             tail = null;
         }
         size--;
@@ -179,14 +176,15 @@ public class MyLinkedList implements MyList, MyQueue {
     }
 
     @Override
-    public Integer peek() {
+    public T peek() {
         return isEmpty() ? null : head.data;
     }
-    private Node getNode(int index){
+
+    private Node<T> getNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of Bounds");
         }
-        Node current = head;
+        Node<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
