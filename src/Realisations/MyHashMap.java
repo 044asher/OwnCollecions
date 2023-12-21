@@ -43,8 +43,6 @@ public class MyHashMap implements MyMap {
             size++;
             return;
         }
-
-
         Node current = table[index];
         while (current != null) {
             if (current.key.equals(key)) {

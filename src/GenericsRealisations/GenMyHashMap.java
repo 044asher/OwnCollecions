@@ -39,31 +39,25 @@ public class GenMyHashMap<K, V> implements GenMyMap<K, V> {
     public void put(K key, V value) {
         int index = hash(key);
 
-        if (table[index] == null) {
+        if (table[index] == null) { // Если ячейка по данному индексу пуста, добавляем ключ-значение и выходим из метода
             table[index] = new Node<>(key, value);
             size++;
             return;
         }
 
-        Node<K, V> current = table[index];
-        while (current != null) {
-            if (current.key.equals(key)) {
-                current.value = value;
-                return;
-            }
-            current = current.next;
+        int step = 1;//Теперь для решения коллизий будем использовать линейный метод вместо метода цепочек.
+        int i = index; //Для начала присвоим переменной і наш индекс
+        while (table[i] != null) { //Входим в цикл который проверяет пуста ли ячейка
+            i = (i + step) % table.length; //Если ячейка не пуста, то цикл увеличивает і на step, но при этом чтобы не выйти за пределы таблицы применяем % на размер таблицы
+            step++; //ну и в конце каждой итерации увеличиваем step на единичку для нашего следующего шага.
         }
+        table[i] = new Node<>(key, value); //когда такими проходочками нашли свободную ячейку, кладем в неё наше ключ-значение.
         size++;
 
         if ((double) size / table.length > THRESHOLD) {
             resizeTable();
         }
-
-        Node<K, V> newNode = new Node<>(key, value);
-        newNode.next = table[index];
-        table[index] = newNode;
     }
-
     @Override
     public boolean remove(K key) {
         int index = hash(key);
@@ -96,12 +90,14 @@ public class GenMyHashMap<K, V> implements GenMyMap<K, V> {
     @Override
     public V get(K key) {
         int index = hash(key);
-        Node<K, V> current = table[index];
-        while (current != null) {
-            if (current.key.equals(key)) {
-                return current.value;
+        int step = 1;
+        int i = index;
+        while (table[i] != null) {
+            if (table[i].key.equals(key)) {
+                return table[i].value;
             }
-            current = current.next;
+            i = (i + step) % table.length;
+            step++;
         }
         return null;
     }

@@ -135,12 +135,15 @@ public class Main {
         System.out.println("ВМ5678ВМ: " + carMap.get("ВМ5678ВМ"));
 
         carMap.printMap();
+        System.out.println(Arrays.toString(carMap.keyArray()));
+        System.out.println(Arrays.toString(carMap.valueArray()));
 
 
-        carMap.remove("ВМ5678ВМ");
+        carMap.remove("ВМ9999ВМ");
 
 
         System.out.println("Размер после удаления: " + carMap.size());
         carMap.printMap();
+
     }
 }
